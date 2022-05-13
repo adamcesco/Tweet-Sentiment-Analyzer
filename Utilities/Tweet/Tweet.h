@@ -8,17 +8,18 @@
 #include <string>
 
 enum SENTI {
-    GUESS, POSITIVE, NEGATIVE
+    GUESS = '\0', POSITIVE = '4', NEGATIVE = '0'
 };
 
-class Tweet {
-private:
+struct Tweet {
     std::string content;
     std::string ID;
-    SENTI senti;
+    SENTI senti = GUESS;
 
-public:
     Tweet() = default;
+    void readTweetTester(char* str);
+    void readTweetTrainer(char* str);
+    void clean();
 };
 
 
