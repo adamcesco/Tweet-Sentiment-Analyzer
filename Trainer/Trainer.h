@@ -12,13 +12,13 @@
 
 class Trainer {
 private:
-    util::ConfusionMatrix cm;
     std::unordered_map<std::string, util::Word> wordMap;
 
 public:
     void countWordSentiFrom(const std::vector<util::Tweet> &tweetVect);
     void calcWordSentiAcc(const std::vector<util::Tweet> &tweetVect);
     void cleanOutliers();
+    std::unordered_map<std::string, util::Word>::iterator find(const std::string& str);
 };
 
 

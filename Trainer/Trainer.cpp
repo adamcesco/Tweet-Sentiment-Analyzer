@@ -49,3 +49,10 @@ void Trainer::cleanOutliers() {
             it = wordMap.erase(it);
     }
 }
+
+std::unordered_map<std::string, util::Word>::iterator Trainer::find(const std::string &str) {
+    auto toReturn = this->wordMap.find(str);
+    if(toReturn == this->wordMap.end())
+        throw std::invalid_argument("Error in \"std::unordered_map<std::string, util::Word>::iterator Trainer::find(const std::string &str)\" | passed string has not been found");
+    return toReturn;
+}
