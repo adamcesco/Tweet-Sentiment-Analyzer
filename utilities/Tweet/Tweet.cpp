@@ -5,8 +5,9 @@
 #include "Tweet.h"
 #include "string.h"
 #include <stdexcept>
+#include "../Pipelines/pipelines.h"
 
-void Tweet::readTweetTester(char* str) {
+void util::Tweet::readTweetTester(char* str) {
     if(str == nullptr)
         throw std::invalid_argument("Error in \"void Tweet::readTweetTrainer(char *str)\" | passed char * is nullptr");
 
@@ -23,7 +24,7 @@ void Tweet::readTweetTester(char* str) {
     }
 }
 
-void Tweet::readTweetTrainer(char *str) {
+void util::Tweet::readTweetTrainer(char *str) {
     if(str == nullptr)
         throw std::invalid_argument("Error in \"void Tweet::readTweetTrainer(char *str)\" | passed char * is nullptr");
 
@@ -41,6 +42,11 @@ void Tweet::readTweetTrainer(char *str) {
     }
 }
 
-void Tweet::clean() {
-
+void util::Tweet::clean() {
+    pipelines::removeAbsLinks(this->content);
+    pipelines::removeUsernames(this->content);
+    this->content = pipelines::removeNonAlphas(this->content);
+    this->content = pipelines::stemText(this->content);
+    this->content = pipelines::removeStopWords(this->content);
+    this->content = pipelines::removeRepeatingChars(this->content);
 }

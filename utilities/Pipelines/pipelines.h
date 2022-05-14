@@ -6,7 +6,7 @@
 #define TWEET_SENTIMENT_ANALYSER_PIPELINES_H
 
 #include <string>
-namespace pipeline {
+namespace pipelines {
     void removeAbsLinks(std::string &text);
     void removeUsernames(std::string& text);
     std::string removeNonAlphas(const std::string& text);
