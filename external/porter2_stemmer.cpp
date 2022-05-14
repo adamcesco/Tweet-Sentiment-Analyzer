@@ -88,22 +88,6 @@ void Porter2Stemmer::trim(std::string& word)
     word.erase(it, word.end());
 }
 
-//-------------------------------------------------
-
-#include <cstring>
-
-char* Porter2Stemmer::stemTrimcstr(char* passed){
-    std::string topass(passed);
-    trim(topass);
-    stem(topass);
-    strcpy(passed, topass.c_str());
-    return passed;
-}
-
-void trimcstr(char* &passed);
-
-//-------------------------------------------------
-
 size_t Porter2Stemmer::internal::getStartR1(const std::string& word)
 {
     // special cases

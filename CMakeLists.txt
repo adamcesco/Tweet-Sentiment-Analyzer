@@ -3,4 +3,4 @@ project(Tweet-Sentiment-Analyser)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Tweet-Sentiment-Analyser main.cpp Utilities/StopWords.h Utilities/Tweet/Tweet.cpp Utilities/Tweet/Tweet.h Utilities/pipelines.cpp Utilities/pipelines.h)
+add_executable(Tweet-Sentiment-Analyser main.cpp utilities/StopWords.h utilities/Tweet/Tweet.cpp utilities/Tweet/Tweet.h utilities/pipelines.cpp utilities/pipelines.h external/porter2_stemmer.cpp external/porter2_stemmer.h)

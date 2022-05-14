@@ -32,13 +32,13 @@
 
 #include <vector>
 #include <string>
-#include "../Utilities/util/string_view.h"
+#include "util/string_view.h"
 
 namespace Porter2Stemmer
 {
 void stem(std::string& word);
+
 void trim(std::string& word);
-char* stemTrimcstr(char* passed);
 
 namespace internal
 {
