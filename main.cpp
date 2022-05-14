@@ -1,16 +1,16 @@
 #include <iostream>
 #include <fstream>
 #include "./Classifier/Classifier.h"
-#include "./Trainer/Trainer.h"
 
 int main() {
     Trainer trainer;
+
+    std::vector<util::Tweet> trainingTweets;
     {
         std::ifstream trainingFile("../data/train_dataset_20k.csv");
         if (!trainingFile.is_open())
             throw std::invalid_argument("Error in \"int main()\" | Could not open training dataset file");
 
-        std::vector<util::Tweet> trainingTweets;
         bool firstRow = true;
         while (trainingFile.good()) {
             std::string row;
@@ -26,11 +26,11 @@ int main() {
             current.clean();
             trainingTweets.push_back(current);
         }
-
-        trainer.countWordSentiFrom(trainingTweets);
-        trainer.calcWordSentiAcc(trainingTweets);
-        trainer.cleanOutliers();
     }
+
+    trainer.countWordSentiFrom(trainingTweets);
+    trainer.calcWordSentiAcc(trainingTweets);
+    trainer.cleanOutliers();
 
     //------------------------------------
 
@@ -84,10 +84,11 @@ int main() {
     Classifier classifier(&trainer, &testTweets);
     classifier.wordBasedClassification();
     util::ConfusionMatrix cm = Classifier::readConfusionMatrix(classifier, answerKey);
-    std::cout << cm.accuracy() << std::endl;
-    std::cout << cm.truePos + cm.trueNeg << std::endl;
-    std::cout << cm.falseNeg + cm.falsePos << std::endl;
-    std::cout << cm.truePos + cm.trueNeg + cm.falseNeg + cm.falsePos << std::endl;
+    std::cout << "Classifier Statistics:" << std::endl;
+    std::cout << "\tClassifier Accuracy: " << cm.accuracy() << std::endl;
+    std::cout << "\tClassified correctly: " << cm.truePos + cm.trueNeg << std::endl;
+    std::cout << "\tClassified incorrectly: " << cm.falseNeg + cm.falsePos << std::endl;
+    std::cout << "\tTotal amount of tweets: " << cm.conditionPos + cm.conditionNeg << std::endl;
 
     return 0;
 }
