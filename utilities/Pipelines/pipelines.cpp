@@ -4,7 +4,6 @@
 
 #include <sstream>
 #include "pipelines.h"
-#include "string.h"
 #include "../../external/porter2_stemmer.h"
 #include "../StopWords.h"
 
@@ -32,8 +31,10 @@ void pipelines::removeUsernames(std::string &text) {
 std::string pipelines::removeNonAlphas(const std::string &text) {
     std::string toReturn;
     for (const char& it : text) {
-        if (it == ' ' || std::isalpha(it))
+        if (std::isalpha(it))
             toReturn += it;
+        else if (it != '-')
+            toReturn += ' ';
     }
     return toReturn;
 }
