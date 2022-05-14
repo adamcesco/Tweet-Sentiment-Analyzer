@@ -42,10 +42,10 @@ void Classifier::wordBasedClassification() {
     }
 }
 
-util::ConfusionMatrix Classifier::readConfusionMatrix(const Classifier &classifier, std::unordered_map<std::string, util::SENTI> sentimentMap) {
+util::ConfusionMatrix Classifier::readConfusionMatrix(const Classifier &classifier, const std::unordered_map<std::string, util::SENTI> &sentimentMap) {
     util::ConfusionMatrix confusionMatrix;
     for (const auto& tweet : *classifier.tweets) {
-        util::SENTI senti = sentimentMap[tweet.ID];
+        util::SENTI senti = sentimentMap.at(tweet.ID);
         if(senti == util::POSITIVE)
             confusionMatrix.conditionPos++;
         else if(senti == util::NEGATIVE)

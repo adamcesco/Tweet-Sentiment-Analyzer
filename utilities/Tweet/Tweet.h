@@ -19,9 +19,9 @@ namespace util{
 
         Tweet() = default;
 
-        void readTweetTester(char *str);
+        void readTweetTester(const std::string &str);
 
-        void readTweetTrainer(char *str);
+        void readTweetTrainer(const std::string &str);
 
         void clean();
     };

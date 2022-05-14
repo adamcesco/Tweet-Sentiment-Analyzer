@@ -3,42 +3,39 @@
 //
 
 #include "Tweet.h"
-#include "string.h"
 #include <stdexcept>
+#include <sstream>
 #include "../Pipelines/pipelines.h"
 
-void util::Tweet::readTweetTester(char* str) {
-    if(str == nullptr)
-        throw std::invalid_argument("Error in \"void Tweet::readTweetTrainer(char *str)\" | passed char * is nullptr");
+void util::Tweet::readTweetTester(const std::string &str) {
+    this->senti = GUESS;
 
-    char* token = strtok(str, ",");
     int counter = 0;
-    while(token != NULL){
+    std::stringstream stream(str);
+    std::string cell;
+    while(getline(stream, cell, ',')){
         if(counter == 0)
-            this->ID = token;
+            this->ID = cell;
         else if(counter == 4)
-            this->content = token;
+            this->content = cell;
 
         counter++;
-        token = strtok(NULL, ",");
     }
 }
 
-void util::Tweet::readTweetTrainer(char *str) {
-    if(str == nullptr)
-        throw std::invalid_argument("Error in \"void Tweet::readTweetTrainer(char *str)\" | passed char * is nullptr");
-
+void util::Tweet::readTweetTrainer(const std::string &str) {
     this->senti = SENTI(str[0]);
-    char* token = strtok(str, ",");
+
     int counter = 0;
-    while(token != NULL){
+    std::stringstream stream(str);
+    std::string cell;
+    while(getline(stream, cell, ',')){
         if(counter == 1)
-            this->ID = token;
+            this->ID = cell;
         else if(counter == 5)
-            this->content = token;
+            this->content = cell;
 
         counter++;
-        token = strtok(NULL, ",");
     }
 }
 

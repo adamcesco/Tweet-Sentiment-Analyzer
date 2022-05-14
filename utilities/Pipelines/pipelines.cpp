@@ -33,7 +33,7 @@ std::string pipelines::removeNonAlphas(const std::string &text) {
     for (const char& it : text) {
         if (std::isalpha(it))
             toReturn += it;
-        else if (it != '-')
+        else if (it != '-' && it != '\'')
             toReturn += ' ';
     }
     return toReturn;
@@ -45,7 +45,7 @@ std::string pipelines::stemText(const std::string &text) {
     std::stringstream stream(text);
     while(stream >> current){
         Porter2Stemmer::stem(current);
-        toReturn += current;
+        toReturn += current + ' ';
     }
     return toReturn;
 }
@@ -69,7 +69,7 @@ std::string pipelines::removeStopWords(const std::string &text) {
     std::stringstream stream(text);
     while(stream >> current){
         if(stopWords.corpusSet.find(current) == stopWords.corpusSet.end())
-            toReturn += current;
+            toReturn += current + ' ';
     }
     return toReturn;
 }

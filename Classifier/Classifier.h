@@ -14,7 +14,7 @@ private:
 public:
     Classifier(Trainer* trainingData, std::vector<util::Tweet>* tweets);
     void wordBasedClassification();
-    static util::ConfusionMatrix readConfusionMatrix(const Classifier& classifier, std::unordered_map<std::string, util::SENTI> sentimentMap);
+    static util::ConfusionMatrix readConfusionMatrix(const Classifier& classifier, const std::unordered_map<std::string, util::SENTI> &sentimentMap);
 };
 
 
