@@ -12,33 +12,40 @@ Classifier::Classifier(Trainer *trainingData, std::vector<util::Tweet> *tweets) 
 
 void Classifier::wordBasedClassification() {
     for (auto& tweet : *this->tweets) {
-        std::string current;
-        std::stringstream stream(tweet.content);
         float grade = 0.0;
-        while (stream >> current) {
-            std::unordered_map<std::string, util::Word>::iterator iter;
-            try {
-                iter = this->trainingData->find(current);
-            }
-            catch (const std::invalid_argument& e){
-                continue;
-            }
+        int counter = 0;
+        {
+            std::string current;
+            std::stringstream stream(tweet.content);
+            while (stream >> current) {
+                std::unordered_map<std::string, util::Word>::iterator iter;
+                try {
+                    iter = this->trainingData->find(current);
+                }
+                catch (const std::invalid_argument &e) {
+                    continue;
+                }
+                if (iter->second.posCount > iter->second.negCount) {
+                    counter++;
+                    grade += iter->second.cm.accuracy();
+                } else if (iter->second.posCount < iter->second.negCount) {
+                    counter++;
+                    grade -= iter->second.cm.accuracy();
+                }
 
-            if(iter->second.posCount > iter->second.negCount){
-                grade -= iter->second.cm.accuracy();
             }
-            else if(iter->second.posCount < iter->second.negCount){
-                grade += iter->second.cm.accuracy();
-            }
-
         }
 
-        int gradeInt = grade * 100;
+        tweet.senti = util::GUESS;
 
-        if(gradeInt < 0)
-            tweet.senti = util::NEGATIVE;
-        else if(gradeInt > 0)
-            tweet.senti = util::POSITIVE;
+        if(counter > 0){
+            int gradeInt = int(grade * 100);
+
+            if (gradeInt < 0)
+                tweet.senti = util::NEGATIVE;
+            else if (gradeInt > 0)
+                tweet.senti = util::POSITIVE;
+        }
     }
 }
 
@@ -50,6 +57,14 @@ util::ConfusionMatrix Classifier::readConfusionMatrix(const Classifier &classifi
             confusionMatrix.conditionPos++;
         else if(senti == util::NEGATIVE)
             confusionMatrix.conditionNeg++;
+
+        if(tweet.senti == util::GUESS) {
+            if(senti == util::POSITIVE)
+                confusionMatrix.truePos++;
+            else
+                confusionMatrix.falsePos++;
+            continue;
+        }
 
         if(senti == util::POSITIVE) {
             if(tweet.senti == senti)
@@ -63,7 +78,6 @@ util::ConfusionMatrix Classifier::readConfusionMatrix(const Classifier &classifi
             else
                 confusionMatrix.falseNeg++;
         }
-
     }
 
     return confusionMatrix;

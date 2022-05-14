@@ -27,12 +27,16 @@ void Trainer::calcWordSentiAcc(const std::vector<util::Tweet> &tweetVect) {
         while (stream >> current) {
             util::Word &word = this->wordMap[current];
             if (tweet.senti == util::POSITIVE) {
+                word.cm.conditionPos++;
+
                 if (word.posCount > word.negCount) {
                     word.cm.truePos++;
                 } else if (word.posCount < word.negCount) {
                     word.cm.falseNeg++;
                 }
             } else if (tweet.senti == util::NEGATIVE) {
+                word.cm.conditionPos++;
+
                 if (word.posCount < word.negCount) {
                     word.cm.trueNeg++;
                 } else if (word.posCount > word.negCount) {
@@ -45,9 +49,10 @@ void Trainer::calcWordSentiAcc(const std::vector<util::Tweet> &tweetVect) {
 
 void Trainer::cleanOutliers() {
     for (auto it = this->wordMap.cbegin(); it != this->wordMap.cend(); ++it) {
-        if(int(it->second.cm.accuracy() * 100) < 54)
+        if((it->second.posCount + it->second.negCount) < 3 || int(it->second.cm.accuracy() * 100) < 54)
             it = wordMap.erase(it);
     }
+    wordMap.erase("");
 }
 
 std::unordered_map<std::string, util::Word>::iterator Trainer::find(const std::string &str) {

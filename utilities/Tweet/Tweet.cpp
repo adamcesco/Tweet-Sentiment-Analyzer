@@ -43,7 +43,7 @@ void util::Tweet::clean() {
     pipelines::removeAbsLinks(this->content);
     pipelines::removeUsernames(this->content);
     this->content = pipelines::removeNonAlphas(this->content);
-    this->content = pipelines::stemText(this->content);
     this->content = pipelines::removeStopWords(this->content);
+    this->content = pipelines::stemText(this->content);
     this->content = pipelines::removeRepeatingChars(this->content);
 }

@@ -85,6 +85,9 @@ int main() {
     classifier.wordBasedClassification();
     util::ConfusionMatrix cm = Classifier::readConfusionMatrix(classifier, answerKey);
     std::cout << cm.accuracy() << std::endl;
+    std::cout << cm.truePos + cm.trueNeg << std::endl;
+    std::cout << cm.falseNeg + cm.falsePos << std::endl;
+    std::cout << cm.truePos + cm.trueNeg + cm.falseNeg + cm.falsePos << std::endl;
 
     return 0;
 }
