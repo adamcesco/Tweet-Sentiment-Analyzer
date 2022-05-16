@@ -82,7 +82,7 @@ int main() {
     }
 
     Classifier classifier(&trainer, &testTweets);
-    classifier.wordBasedClassification();
+    classifier.classify();
     util::ConfusionMatrix cm = Classifier::readConfusionMatrix(classifier, answerKey);
     std::cout << "Classifier Statistics:" << std::endl;
     std::cout << "\tClassifier Accuracy: " << cm.accuracy() << std::endl;

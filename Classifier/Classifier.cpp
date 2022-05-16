@@ -10,7 +10,7 @@ Classifier::Classifier(Trainer *trainingData, std::vector<util::Tweet> *tweets) 
     this->tweets = tweets;
 }
 
-void Classifier::wordBasedClassification() {
+void Classifier::classify() {
     for (auto& tweet : *this->tweets) {
         float grade = 0.0;
         int counter = 0;
