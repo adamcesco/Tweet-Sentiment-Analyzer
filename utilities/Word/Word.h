@@ -2,8 +2,8 @@
 // Created by misc1 on 5/13/2022.
 //
 
-#ifndef TWEET_SENTIMENT_ANALYSER_FEATURE_H
-#define TWEET_SENTIMENT_ANALYSER_FEATURE_H
+#ifndef TWEET_SENTIMENT_ANALYSER_WORD_H
+#define TWEET_SENTIMENT_ANALYSER_WORD_H
 
 #include <string>
 
@@ -19,17 +19,17 @@ namespace util{
         float accuracy() const;
     };
 
-    struct Feature {
+    struct Word {
         std::string data;
         int negCount = 0;
         int posCount = 0;
         ConfusionMatrix cm;
 
-        Feature() = default;
-        Feature(std::string data) { this->data = data; }
+        Word() = default;
+        Word(std::string data) { this->data = data; }
     };
 
 }
 
 
-#endif //TWEET_SENTIMENT_ANALYSER_FEATURE_H
+#endif //TWEET_SENTIMENT_ANALYSER_WORD_H

@@ -7,18 +7,18 @@
 
 #include <unordered_map>
 #include <vector>
-#include "../utilities/Feature/Feature.h"
+#include "../utilities/Word/Word.h"
 #include "../utilities/Tweet/Tweet.h"
 
 class Trainer {
 private:
-    std::unordered_map<std::string, util::Feature> wordMap;
+    std::unordered_map<std::string, util::Word> wordMap;
 
 public:
     void countWordSentiFrom(const std::vector<util::Tweet> &tweetVect);
     void calcWordSentiAcc(const std::vector<util::Tweet> &tweetVect);
     void cleanOutliers();
-    std::unordered_map<std::string, util::Feature>::iterator find(const std::string& str);
+    std::unordered_map<std::string, util::Word>::iterator find(const std::string& str);
 };
 
 
