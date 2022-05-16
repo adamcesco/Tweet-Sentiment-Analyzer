@@ -18,7 +18,7 @@ void Classifier::wordBasedClassification() {
             std::string current;
             std::stringstream stream(tweet.content);
             while (stream >> current) {
-                std::unordered_map<std::string, util::Word>::iterator iter;
+                std::unordered_map<std::string, util::Feature>::iterator iter;
                 try {
                     iter = this->trainingData->find(current);
                 }
