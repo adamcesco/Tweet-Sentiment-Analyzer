@@ -1,1 +1,1 @@
-# Tweet-Sentiment-Analyzer
+# Tweet-Sentiment-Classifier
