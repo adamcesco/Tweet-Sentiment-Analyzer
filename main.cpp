@@ -28,9 +28,7 @@ int main() {
         }
     }
 
-    trainer.countWordSentiFrom(trainingTweets);
-    trainer.calcWordSentiAcc(trainingTweets);
-    trainer.cleanOutliers();
+    trainer.trainWith(trainingTweets);
 
     //------------------------------------
 
@@ -82,8 +80,10 @@ int main() {
     }
 
     Classifier classifier(&trainer, &testTweets);
-    classifier.classify();
+    classifier.classifyWithBiwordAcc();
+    classifier.classifyWithWordAcc();
     util::ConfusionMatrix cm = Classifier::readConfusionMatrix(classifier, answerKey);
+
     std::cout << "Classifier Statistics:" << std::endl;
     std::cout << "\tClassifier Accuracy: " << cm.accuracy() << std::endl;
     std::cout << "\tClassified correctly: " << cm.truePos + cm.trueNeg << std::endl;

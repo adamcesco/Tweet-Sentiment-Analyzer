@@ -10,8 +10,11 @@ Classifier::Classifier(Trainer *trainingData, std::vector<util::Tweet> *tweets) 
     this->tweets = tweets;
 }
 
-void Classifier::classify() {
+void Classifier::classifyWithWordAcc() {
     for (auto& tweet : *this->tweets) {
+        if(tweet.senti != util::GUESS)
+            continue;
+
         float grade = 0.0;
         int counter = 0;
         {
@@ -20,11 +23,14 @@ void Classifier::classify() {
             while (stream >> current) {
                 std::unordered_map<std::string, util::Feature>::iterator iter;
                 try {
-                    iter = this->trainingData->find(current);
+                    iter = this->trainingData->findWord(current);
                 }
                 catch (const std::invalid_argument &e) {
                     continue;
                 }
+                if(iter->second.flag == true)
+                    continue;
+
                 if (iter->second.posCount > iter->second.negCount) {
                     counter++;
                     grade += iter->second.cm.accuracy();
@@ -32,7 +38,6 @@ void Classifier::classify() {
                     counter++;
                     grade -= iter->second.cm.accuracy();
                 }
-
             }
         }
 
@@ -81,4 +86,53 @@ util::ConfusionMatrix Classifier::readConfusionMatrix(const Classifier &classifi
     }
 
     return confusionMatrix;
+}
+
+void Classifier::classifyWithBiwordAcc() {
+    for (auto& tweet : *this->tweets) {
+        if(tweet.senti != util::GUESS)
+            continue;
+
+        float grade = 0.0;
+        int counter = 0;
+        {
+            std::string current;
+            std::stringstream stream(tweet.content);
+            std::string previous;
+            stream >> previous;
+            while (stream >> current) {
+                std::unordered_map<std::string, util::Feature>::iterator iter;
+                try {
+                    iter = this->trainingData->findBiword(previous + '-' + current);
+                }
+                catch (const std::invalid_argument &e) {
+                    continue;
+                }
+                if(iter->second.flag == true) {
+                    previous = current;
+                    continue;
+                }
+
+                if (iter->second.posCount > iter->second.negCount) {
+                    counter++;
+                    grade += iter->second.cm.accuracy();
+                } else if (iter->second.posCount < iter->second.negCount) {
+                    counter++;
+                    grade -= iter->second.cm.accuracy();
+                }
+                previous = current;
+            }
+        }
+
+        tweet.senti = util::GUESS;
+
+        if(counter > 0){
+            int gradeInt = int(grade * 100);
+
+            if (gradeInt < 0)
+                tweet.senti = util::NEGATIVE;
+            else if (gradeInt > 0)
+                tweet.senti = util::POSITIVE;
+        }
+    }
 }

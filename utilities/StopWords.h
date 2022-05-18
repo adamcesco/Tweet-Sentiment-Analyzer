@@ -617,7 +617,6 @@ namespace util {
                 "we",
                 "wed",
                 "welcome",
-                "we'll",
                 "went",
                 "were",
                 "werent",

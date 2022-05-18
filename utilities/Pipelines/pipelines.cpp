@@ -33,7 +33,7 @@ std::string pipelines::removeNonAlphas(const std::string &text) {
     for (const char& it : text) {
         if (std::isalpha(it))
             toReturn += tolower(it);
-        else if (it != '-' && it != '\'')
+        else if (it != '\'')
             toReturn += ' ';
     }
     return toReturn;

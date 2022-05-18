@@ -13,12 +13,17 @@
 class Trainer {
 private:
     std::unordered_map<std::string, util::Feature> wordMap;
+    std::unordered_map<std::string, util::Feature> biwordMap;
 
-public:
     void countWordSentiFrom(const std::vector<util::Tweet> &tweetVect);
+    void countBiwordSentiFrom(const std::vector<util::Tweet> &tweetVect);
     void calcWordSentiAcc(const std::vector<util::Tweet> &tweetVect);
-    void cleanOutliers();
-    std::unordered_map<std::string, util::Feature>::iterator find(const std::string& str);
+    void calcBiwordSentiAcc(const std::vector<util::Tweet> &tweetVect);
+    void FlagOutliers();
+public:
+    void trainWith(const std::vector<util::Tweet> &tweetVect);
+    std::unordered_map<std::string, util::Feature>::iterator findWord(const std::string& str);
+    std::unordered_map<std::string, util::Feature>::iterator findBiword(const std::string& str);
 };
 
 

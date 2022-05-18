@@ -23,6 +23,7 @@ namespace util{
         std::string data;
         int negCount = 0;
         int posCount = 0;
+        bool flag = false;
         ConfusionMatrix cm;
 
         Feature() = default;

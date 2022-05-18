@@ -413,7 +413,7 @@ inline void hash_append(HashAlgorithm& h, std::nullptr_t)
 }
 
 // all of these hash_appends below need to be forward declared so they can
-// find one another in their implementations
+// findWord one another in their implementations
 
 template <class HashAlgorithm, class T, std::size_t N>
 typename std::enable_if<!is_contiguously_hashable<T>::value>::type

@@ -13,7 +13,8 @@ private:
     std::vector<util::Tweet>* tweets;
 public:
     Classifier(Trainer* trainingData, std::vector<util::Tweet>* tweets);
-    void classify();
+    void classifyWithWordAcc();
+    void classifyWithBiwordAcc();
     static util::ConfusionMatrix readConfusionMatrix(const Classifier& classifier, const std::unordered_map<std::string, util::SENTI> &sentimentMap);
 };
 
