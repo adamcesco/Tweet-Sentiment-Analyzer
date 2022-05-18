@@ -49,5 +49,9 @@ void util::Tweet::clean() {
 }
 
 bool util::Tweet::empty() const {
-    return this->content.empty() || this->ID.empty();
+    return this->content.empty();
+}
+
+bool util::Tweet::identified() const {
+    return this->ID.empty() == false;
 }

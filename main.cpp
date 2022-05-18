@@ -3,8 +3,6 @@
 #include "./Classifier/Classifier.h"
 
 int main() {
-    Trainer trainer;
-
     std::vector<util::Tweet> trainingTweets;
     {
         std::ifstream trainingFile("../data/train_dataset_20k.csv");
@@ -20,10 +18,11 @@ int main() {
             current.readTweetTrainer(row);
             try { current.clean(); }
             catch (const std::invalid_argument& e){ continue; }
-            if (!current.empty()) { trainingTweets.push_back(current); }
+            if (!current.empty() && current.identified()) { trainingTweets.push_back(current); }
         }
     }
 
+    Trainer trainer;
     trainer.trainWith(trainingTweets);
 
     //------------------------------------
@@ -42,8 +41,8 @@ int main() {
             util::Tweet current;
             current.readTweetTester(row);
             try { current.clean(); }
-            catch (const std::invalid_argument& e){ continue; }
-            if (!current.empty()) { testTweets.push_back(current); }
+            catch (const std::invalid_argument& e){}
+            if (current.identified()) { testTweets.push_back(current); }
         }
     }
 
@@ -71,8 +70,8 @@ int main() {
     Classifier classifier(&trainer, &testTweets);
     classifier.biwordClassify();
     classifier.wordClassify();
-    util::ConfusionMatrix cm = Classifier::readConfusionMatrix(classifier, answerKey);
 
+    util::ConfusionMatrix cm = Classifier::readConfusionMatrix(classifier, answerKey);
     std::cout << "Classifier Statistics:" << std::endl;
     std::cout << "\tClassifier Accuracy: " << cm.accuracy() << std::endl;
     std::cout << "\tClassifier Recall: " << cm.recall() << std::endl;

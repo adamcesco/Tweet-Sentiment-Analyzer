@@ -26,6 +26,8 @@ namespace util{
         void clean();
 
         bool empty() const;
+
+        bool identified() const;
     };
 
 }
