@@ -12,11 +12,10 @@ private:
     Trainer* trainingData;
     std::vector<util::Tweet>* tweets;
 
-    void classifyWithWordAcc();
-    void classifyWithBiwordAcc();
 public:
     Classifier(Trainer* trainingData, std::vector<util::Tweet>* tweets);
-    void classify();
+    void wordClassify();
+    void biwordClassify();
     static util::ConfusionMatrix readConfusionMatrix(const Classifier& classifier, const std::unordered_map<std::string, util::SENTI> &sentimentMap);
 };
 

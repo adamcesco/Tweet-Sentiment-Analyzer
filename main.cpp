@@ -69,11 +69,13 @@ int main() {
     }
 
     Classifier classifier(&trainer, &testTweets);
-    classifier.classify();
+    classifier.biwordClassify();
+    classifier.wordClassify();
     util::ConfusionMatrix cm = Classifier::readConfusionMatrix(classifier, answerKey);
 
     std::cout << "Classifier Statistics:" << std::endl;
     std::cout << "\tClassifier Accuracy: " << cm.accuracy() << std::endl;
+    std::cout << "\tClassifier Recall: " << cm.recall() << std::endl;
     std::cout << "\tClassified correctly: " << cm.truePos + cm.trueNeg << std::endl;
     std::cout << "\tClassified incorrectly: " << cm.falseNeg + cm.falsePos << std::endl;
     std::cout << "\tTotal amount of tweets: " << cm.conditionPos + cm.conditionNeg << std::endl;

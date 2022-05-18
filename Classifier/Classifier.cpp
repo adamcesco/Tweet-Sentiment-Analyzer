@@ -10,7 +10,7 @@ Classifier::Classifier(Trainer *trainingData, std::vector<util::Tweet> *tweets) 
     this->tweets = tweets;
 }
 
-void Classifier::classifyWithWordAcc() {
+void Classifier::wordClassify() {
     for (auto& tweet : *this->tweets) {
         if(tweet.senti != util::GUESS)
             continue;
@@ -54,41 +54,7 @@ void Classifier::classifyWithWordAcc() {
     }
 }
 
-util::ConfusionMatrix Classifier::readConfusionMatrix(const Classifier &classifier, const std::unordered_map<std::string, util::SENTI> &sentimentMap) {
-    util::ConfusionMatrix confusionMatrix;
-    for (const auto& tweet : *classifier.tweets) {
-        util::SENTI senti = sentimentMap.at(tweet.ID);
-        if(senti == util::POSITIVE)
-            confusionMatrix.conditionPos++;
-        else if(senti == util::NEGATIVE)
-            confusionMatrix.conditionNeg++;
-        else
-            continue;
-
-        if(tweet.senti == util::GUESS) {
-            if(senti == util::POSITIVE)
-                confusionMatrix.truePos++;
-            else
-                confusionMatrix.falsePos++;
-        }
-        else if(tweet.senti == util::POSITIVE) {
-            if(tweet.senti == senti)
-                confusionMatrix.truePos++;
-            else
-                confusionMatrix.falsePos++;
-        }
-        else if(tweet.senti == util::NEGATIVE){
-            if(tweet.senti == senti)
-                confusionMatrix.trueNeg++;
-            else
-                confusionMatrix.falseNeg++;
-        }
-    }
-
-    return confusionMatrix;
-}
-
-void Classifier::classifyWithBiwordAcc() {
+void Classifier::biwordClassify() {
     for (auto& tweet : *this->tweets) {
         if(tweet.senti != util::GUESS)
             continue;
@@ -137,7 +103,36 @@ void Classifier::classifyWithBiwordAcc() {
     }
 }
 
-void Classifier::classify() {
-    this->classifyWithBiwordAcc();
-    this->classifyWithWordAcc();
+util::ConfusionMatrix Classifier::readConfusionMatrix(const Classifier &classifier, const std::unordered_map<std::string, util::SENTI> &sentimentMap) {
+    util::ConfusionMatrix confusionMatrix;
+    for (const auto& tweet : *classifier.tweets) {
+        util::SENTI senti = sentimentMap.at(tweet.ID);
+        if(senti == util::POSITIVE)
+            confusionMatrix.conditionPos++;
+        else if(senti == util::NEGATIVE)
+            confusionMatrix.conditionNeg++;
+        else
+            continue;
+
+        if(tweet.senti == util::GUESS) {
+            if(senti == util::POSITIVE)
+                confusionMatrix.truePos++;
+            else
+                confusionMatrix.falsePos++;
+        }
+        else if(tweet.senti == util::POSITIVE) {
+            if(tweet.senti == senti)
+                confusionMatrix.truePos++;
+            else
+                confusionMatrix.falsePos++;
+        }
+        else if(tweet.senti == util::NEGATIVE){
+            if(tweet.senti == senti)
+                confusionMatrix.trueNeg++;
+            else
+                confusionMatrix.falseNeg++;
+        }
+    }
+
+    return confusionMatrix;
 }

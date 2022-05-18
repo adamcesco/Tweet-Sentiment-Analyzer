@@ -17,6 +17,7 @@ namespace util{
         int falsePos = 0;
 
         float accuracy() const;
+        float recall() const;
     };
 
     struct Feature {
