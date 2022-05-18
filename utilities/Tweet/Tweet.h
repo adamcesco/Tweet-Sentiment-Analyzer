@@ -24,6 +24,8 @@ namespace util{
         void readTweetTrainer(const std::string &str);
 
         void clean();
+
+        bool empty() const;
     };
 
 }

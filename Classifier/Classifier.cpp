@@ -62,22 +62,22 @@ util::ConfusionMatrix Classifier::readConfusionMatrix(const Classifier &classifi
             confusionMatrix.conditionPos++;
         else if(senti == util::NEGATIVE)
             confusionMatrix.conditionNeg++;
+        else
+            continue;
 
         if(tweet.senti == util::GUESS) {
             if(senti == util::POSITIVE)
                 confusionMatrix.truePos++;
             else
                 confusionMatrix.falsePos++;
-            continue;
         }
-
-        if(senti == util::POSITIVE) {
+        else if(tweet.senti == util::POSITIVE) {
             if(tweet.senti == senti)
                 confusionMatrix.truePos++;
             else
                 confusionMatrix.falsePos++;
         }
-        else if(senti == util::NEGATIVE){
+        else if(tweet.senti == util::NEGATIVE){
             if(tweet.senti == senti)
                 confusionMatrix.trueNeg++;
             else
@@ -135,4 +135,9 @@ void Classifier::classifyWithBiwordAcc() {
                 tweet.senti = util::POSITIVE;
         }
     }
+}
+
+void Classifier::classify() {
+    this->classifyWithBiwordAcc();
+    this->classifyWithWordAcc();
 }

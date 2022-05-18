@@ -8,6 +8,9 @@
 #include "../StopWords.h"
 
 void pipelines::removeAbsLinks(std::string &text) {
+    if(text.empty())
+        throw std::invalid_argument("Error in \"void pipelines::removeAbsLinks(std::string &text)\" | Passed string is empty");
+
     std::size_t end = 0;
     auto findNext = [&text, end]() -> std::size_t{
         std::size_t num = text.find("http", end);
@@ -22,6 +25,9 @@ void pipelines::removeAbsLinks(std::string &text) {
 }
 
 void pipelines::removeUsernames(std::string &text) {
+    if(text.empty())
+        throw std::invalid_argument("Error in \"void pipelines::removeUsernames(std::string &text)\" | Passed string is empty");
+
     for (std::size_t start = text.find('@'); start != std::string::npos; start = text.find('@')){
         std::size_t end = text.find_first_of(' ', start);
         text.replace(start, end - start, " ");
@@ -29,6 +35,9 @@ void pipelines::removeUsernames(std::string &text) {
 }
 
 std::string pipelines::removeNonAlphas(const std::string &text) {
+    if(text.empty())
+        throw std::invalid_argument("Error in \"std::string pipelines::removeNonAlphas(const std::string &text)\" | Passed string is empty");
+
     std::string toReturn;
     for (const char& it : text) {
         if (std::isalpha(it))
@@ -40,6 +49,9 @@ std::string pipelines::removeNonAlphas(const std::string &text) {
 }
 
 std::string pipelines::stemText(const std::string &text) {
+    if(text.empty())
+        throw std::invalid_argument("Error in \"std::string pipelines::stemText(const std::string &text)\" | Passed string is empty");
+
     std::string toReturn;
     std::string current;
     std::stringstream stream(text);
@@ -51,6 +63,9 @@ std::string pipelines::stemText(const std::string &text) {
 }
 
 std::string pipelines::removeRepeatingChars(const std::string &text) {
+    if(text.empty())
+        throw std::invalid_argument("Error in \"std::string pipelines::removeRepeatingChars(const std::string &text)\" | Passed string is empty");
+
     std::string toReturn;
     toReturn = text[0];
     for (const auto& it : text) {
@@ -62,6 +77,9 @@ std::string pipelines::removeRepeatingChars(const std::string &text) {
 }
 
 std::string pipelines::removeStopWords(const std::string &text) {
+    if(text.empty())
+        throw std::invalid_argument("Error in \"std::string pipelines::removeStopWords(const std::string &text)\" | Passed string is empty");
+
     std::string toReturn;
     util::StopWords stopWords;
 

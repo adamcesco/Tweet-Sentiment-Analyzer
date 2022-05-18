@@ -11,20 +11,16 @@ int main() {
         if (!trainingFile.is_open())
             throw std::invalid_argument("Error in \"int main()\" | Could not open training dataset file");
 
-        bool firstRow = true;
+        std::string row;
+        getline(trainingFile, row);
         while (trainingFile.good()) {
-            std::string row;
             getline(trainingFile, row);
-
-            if(firstRow == true) {
-                firstRow = false;
-                continue;
-            }
 
             util::Tweet current;
             current.readTweetTrainer(row);
-            current.clean();
-            trainingTweets.push_back(current);
+            try { current.clean(); }
+            catch (const std::invalid_argument& e){ continue; }
+            if (!current.empty()) { trainingTweets.push_back(current); }
         }
     }
 
@@ -38,19 +34,16 @@ int main() {
         if (!testingFile.is_open())
             throw std::invalid_argument("Error in \"int main()\" | Could not open testing dataset file");
 
-        bool firstRow = true;
+        std::string row;
+        getline(testingFile, row);
         while (testingFile.good()) {
-            std::string row;
             getline(testingFile, row);
-            if(firstRow == true) {
-                firstRow = false;
-                continue;
-            }
 
             util::Tweet current;
             current.readTweetTester(row);
-            current.clean();
-            testTweets.push_back(current);
+            try { current.clean(); }
+            catch (const std::invalid_argument& e){ continue; }
+            if (!current.empty()) { testTweets.push_back(current); }
         }
     }
 
@@ -60,18 +53,14 @@ int main() {
         if (!answerFile.is_open())
             throw std::invalid_argument("Error in \"int main()\" | Could not open testing dataset answer key file");
 
-        bool firstRow = true;
+        std::string senti;
+        std::string ID;
+        getline(answerFile, senti, ',');
+        getline(answerFile, ID);
         while (answerFile.good()) {
-            std::string senti;
             getline(answerFile, senti, ',');
-
-            std::string ID;
             getline(answerFile, ID);
 
-            if(firstRow == true) {
-                firstRow = false;
-                continue;
-            }
             while(!ID.empty() && !std::isdigit(ID.back()))
                 ID.pop_back();
 
@@ -80,8 +69,7 @@ int main() {
     }
 
     Classifier classifier(&trainer, &testTweets);
-    classifier.classifyWithBiwordAcc();
-    classifier.classifyWithWordAcc();
+    classifier.classify();
     util::ConfusionMatrix cm = Classifier::readConfusionMatrix(classifier, answerKey);
 
     std::cout << "Classifier Statistics:" << std::endl;

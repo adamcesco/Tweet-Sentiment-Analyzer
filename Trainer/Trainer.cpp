@@ -54,7 +54,7 @@ void Trainer::FlagOutliers() {
     }
 
     for (auto & it : this->biwordMap) {
-        if((it.second.posCount + it.second.negCount) < 10 || int(it.second.cm.accuracy() * 100) < 60)
+        if((it.second.posCount + it.second.negCount) < 10 || int(it.second.cm.accuracy() * 100) < 75)
             it.second.flag = true;
     }
 }

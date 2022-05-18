@@ -47,3 +47,7 @@ void util::Tweet::clean() {
     this->content = pipelines::stemText(this->content);
     this->content = pipelines::removeRepeatingChars(this->content);
 }
+
+bool util::Tweet::empty() const {
+    return this->content.empty() || this->ID.empty();
+}
